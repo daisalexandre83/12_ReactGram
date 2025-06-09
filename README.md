@@ -1,2 +1,2 @@
 # 12_ReactGram
-Seção 12 do curso de React do Matheus Batisti
+Seção 12 do curso de React do Matheus Battisti

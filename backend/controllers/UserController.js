@@ -18,7 +18,7 @@ const register = async(req,res) =>{
 const {name,email,password} = req.body
 
 //check if user exists
-const user = await User.findOne({email})
+const user = await User.findOne({email});
 
 if (user) {
     res.status(422).json({errors:["Por favor,utilize outro e-mail"]})
@@ -32,9 +32,8 @@ const passwordHash = await bcrypt.hash(password,salt)
 //Create user
 const newUser = await User.create({
     name,
-    name,
     email,
-    password:passwordHash
+    password:passwordHash,
 })
 
 //If user was created sucessfully, return the token
@@ -45,10 +44,8 @@ if (!newUser) {
 
 res.status(201).json({
     _id:newUser._id,
-    token:generateToken(newUser.id),
+    token:generateToken(newUser._id),
 });
-    
-    //res.send("Registro");
 };
 
 module.exports = {

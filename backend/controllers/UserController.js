@@ -18,7 +18,7 @@ const register = async(req,res) =>{
 const {name,email,password} = req.body
 
 //check if user exists
-const user = await User.findOne({email});
+const user = await User.findOne({email})
 
 if (user) {
     res.status(422).json({errors:["Por favor,utilize outro e-mail"]})
@@ -34,11 +34,11 @@ const newUser = await User.create({
     name,
     email,
     password:passwordHash,
-})
+});
 
 //If user was created sucessfully, return the token
 if (!newUser) {
-   res.status(422).json({errors:["Houve um erro,por favor tente mais tarde."]}) 
+   res.status(422).json({errors:["Houve um erro,por favor tente mais tarde."]}); 
    return
 }
 
@@ -48,7 +48,13 @@ res.status(201).json({
 });
 };
 
+//Sign user in
+const login  = (req,res) => {
+    res.send("Login")
+}
+
 module.exports = {
     register,
+    login,
 };
 

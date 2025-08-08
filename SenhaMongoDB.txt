@@ -1,0 +1,3 @@
+Senha Mongo DB Atlas: MRT3IBmVn6KD1j6m
+
+String de Conexão:mongodb+srv://dsalexandre83:<db_password>@cluster0.zzyh0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

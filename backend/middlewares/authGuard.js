@@ -21,4 +21,4 @@ const authGuard = async(req,res,next) =>{
     }
 };
 
-module.exports = authGuardfindBy
+module.exports = authGuard;

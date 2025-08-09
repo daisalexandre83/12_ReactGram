@@ -13,7 +13,7 @@ const authGuard = async(req,res,next) =>{
     try {
       const verified = jwt.verify(token,jwtSecret)
 
-      req.user = await User.findByPk(verified.id).select("-password")
+      req.user = await User.findById(verified.id).select("-password")
 
       next();
     } catch (error) {
@@ -21,4 +21,4 @@ const authGuard = async(req,res,next) =>{
     }
 };
 
-module.exports = authGuard
+module.exports = authGuardfindBy

@@ -11,13 +11,12 @@ const authGuard = async(req,res,next) =>{
 
     //check if token is valid
     try {
-      const verified = jwt.verify(token,jwtSecret)
-
-      req.user = await User.findById(verified.id).select("-password")
+      const verified = jwt.verify(token,jwtSecret);
+;
 
       next();
     } catch (error) {
-        res.status(401).json({errors:["Token inválido."]})
+        res.status(401).json({errors:["O Token inválido!"]})
     }
 };
 

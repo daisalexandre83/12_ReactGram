@@ -8,5 +8,9 @@ const insertPhoto = async(req,res) =>{
     const image = req.file.filename;
 
     console.log(req.body);
+    res.send("Photo insert");
+};
 
-}
+module.exports = {
+    insertPhoto,
+};

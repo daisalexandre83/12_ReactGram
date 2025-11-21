@@ -2,7 +2,7 @@ const User = require("../models/User");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -126,23 +126,20 @@ const getUserById = async(req,res) =>{
   try {
     const user = await User.findById(new mongoose.Types.ObjectId(id)).select
     ("-password"
-  );
+    );
 
-  //Check if user exists
-  if (!user) {
-    res.status(404).json({errors:["Usuário não encontrado 2"]})
-    return
-  }
+     //Check if user exists
+    if (!user) {
+      res.status(404).json({errors:["Usuário não encontrado 2"]});
+      return;
+    }
 
-  res.status(200).json(user);
-
-
+    res.status(200).json(user);
   } catch (error) {
-      res.status(404).json({errors:["Usuário não encontrado"]})
-    return
+    res.status(404).json({errors:["Usuário não encontrado"]});
+    return;
   }
-
-}
+};
 
 module.exports = {
     register,

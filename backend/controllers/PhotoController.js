@@ -33,9 +33,9 @@ const insertPhoto = async(req,res) =>{
 
 //Remove a photo from DB
 const deletePhoto = async(req,res) =>{
-    const {id} = req.params
+    const {id} = req.params;
 
-    const reqUser = req.user
+    const reqUser = req.user;
 
     // const photo = Photo.findById(mongoose.Types.ObjectId(id));
 
@@ -90,6 +90,7 @@ const deletePhoto = async(req,res) =>{
 
 //Get all photos
 const getAllPhotos = async(req,res) =>{
+
  const photos = await Photo.find({})
  .sort([["createdAt",-1]])
  .exec();
@@ -102,7 +103,7 @@ const getUserPhotos = async (req,res) => {
     
     const {id} = req.params;
 
-    const photos = Photo.find({userId:id})
+    const photos = await Photo.find({userId:id})
     .sort([['createdAt',-1]])
     .exec()
 

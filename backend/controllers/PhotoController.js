@@ -111,6 +111,11 @@ const getUserPhotos = async (req,res) => {
 
     return res.status(200).json(photos);
 }
+
+// Get photo by Id
+const getPhotoById = async (req,res) = [
+    
+]
 module.exports = {
     insertPhoto,
     deletePhoto,

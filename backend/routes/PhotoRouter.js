@@ -5,7 +5,8 @@ const router = express.Router();
 const {insertPhoto,
     deletePhoto,
     getAllPhotos,
-    getUserPhotos
+    getUserPhotos,
+    getPhotoById
     } = require("../controllers/PhotoController");
 
 //Middlewares
@@ -26,6 +27,7 @@ insertPhoto
 router.delete("/:id",authGuard,deletePhoto);
 router.get("/",authGuard,getAllPhotos);
 router.get("/user/:id",authGuard,getUserPhotos);
+router.get("/:id",authGuard,getPhotoById);
 
 module.exports = router;
 //res.status(404).json({id:photo._id,message:"Foto não encontrada!"}); 

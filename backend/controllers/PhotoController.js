@@ -143,13 +143,21 @@ const updatePhoto = async(req,res) =>{
 
     //Check if photo belongs to user
     if(!photo.userId.equals(reqUser._id)){
-        res.status(422).json({errors:["Ocorreu um erro,por favor tente novamente mais tarde."],
+        res
+        .status(422)
+        .json({errors:["Ocorreu um erro,por favor tente novamente mais tarde."],
         });
         return;
     }
 
+    if (title) {
+        photo.title = title;
+    }
 
-}
+    await photo.save();
+
+    res.status(200).json({photo,message:"Foto atualizada com sucesso!"});
+};
 
 module.exports = {
     insertPhoto,
@@ -157,4 +165,5 @@ module.exports = {
     getAllPhotos,
     getUserPhotos,
     getPhotoById,
+    updatePhoto,
 };

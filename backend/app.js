@@ -12,6 +12,10 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended:false}));
 
+// app.post('/tasks',(req,res) =>{
+//     const {title} = req.body;
+// })
+
 // Solve CORS
 app.use(cors({credentials:true,origin:"http://localhost:5000"}));
 

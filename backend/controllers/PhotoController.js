@@ -1,6 +1,5 @@
 const Photo = require("../models/Photo");
 
-
 const User = require("../models/User");
 
 const mongoose = require("mongoose");
@@ -11,9 +10,10 @@ const insertPhoto = async(req,res) =>{
     const {title} = req.body;
     const image = req.file.filename;
 
-    const reqUser = req.user;
+     const reqUser = req.user;
 
     const user = await User.findById(reqUser._id);
+
 
     //Create a photo
     const newPhoto = await Photo.create({
@@ -191,19 +191,32 @@ const likePhoto = async(req,res) =>{
 };
 
 //Coment functionality
+
 const commentPhoto = async (req,res) => {
-    const {id} = req.params;
-    const {comment} = req.body;
+    try{
+        const {id} = req.params;
+        const {comment} = req.body;
+    
+        const reqUser = req.user;
 
-    const reqUser = req.user;
+        if (!reqUser) {
+         return res.status(401).json({errors:["Usuário não autenticado."]
+         });
+            }
 
-    const photo = await Photo.findById(id)
+        const user = await User.findById(reqUser._id);
+    
+        if (!user) {
+           return res.status(404).json({errors:["Usuário não encontrado."]}) 
+        }
+    
+        const photo = await Photo.findById(id)
 
-    //Check if photo exists
-    if(!photo){
-        res.status(404).json({errors:["Foto não encontrada"]})
-        return;
-    } 
+        //Check if photo exists
+        if(!photo){
+            res.status(404).json({errors:["Foto não encontrada"]})
+            return;
+        } 
 
     //Put comment in the array of comments
     const userComment = {
@@ -213,15 +226,20 @@ const commentPhoto = async (req,res) => {
         userId:user._id,
     };
 
-    photo.comments.push(userComment)
+    photo.comments.push(userComment);
 
-    await photo.save()
+    await photo.save();
 
-    res.status(200).json({
+    return res.status(200).json({
         comment:userComment,
         message:"O comentário foi adicionado com sucesso!"
-    })
-};
+    });
+} catch(error){
+    return res.status(500).json({
+        errors:["Ocorreu um erro ao adicionar o comentário."]
+      });
+     }
+    };
 
 module.exports = {
     insertPhoto,

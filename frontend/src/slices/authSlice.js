@@ -44,7 +44,16 @@ export const authSlice = createSlice({
             state.loading = false;
             state.sucess = true;
             state.error = null;
+            state.user = action.payload;
         })
+        .addCase(register.rejected, (state,action) =>{
+            state.loading = false
+            state.error = action.payload;
+            state.user = null;
+        });
     },
 });
+
+export const {reset} = authSlice.actions;
+export default authSlice.reducer;
 

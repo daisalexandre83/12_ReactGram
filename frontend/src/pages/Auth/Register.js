@@ -5,6 +5,10 @@ import {Link, link} from 'react-router-dom';
 
 //Hooks
 import { useState,useEffect } from "react";
+import {useSelector,useDispatch} from "react-redux";
+
+//Redux
+import {register,reset} from "../../slices/authSlice";
 
 const Register = () =>{
   const [name,setName] = useState("")
@@ -12,7 +16,11 @@ const Register = () =>{
   const [password,setPassword] = useState("")
   const [confirmPassword,setConfirmPassword] = useState("")
 
-    const handleSubmit = (e) =>{
+  const dispatch = useDispatch();
+
+  const {loading,error} = useSelector((state) => state.auth);
+    
+  const handleSubmit = (e) =>{
         e.preventDefault();
 
         const user = {
@@ -23,7 +31,15 @@ const Register = () =>{
         };
 
         console.log(user);
+
+        dispatch(register(user))
     };
+
+    //Claen all auth states
+
+    useEffect(() =>{
+      dispatch(reset());
+    },[dispatch]);
 
     return <div id="register">
       <h2>ReactGram</h2> 

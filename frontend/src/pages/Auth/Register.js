@@ -35,8 +35,7 @@ const Register = () =>{
         dispatch(register(user))
     };
 
-    //Claen all auth states
-
+    //Clean all auth states
     useEffect(() =>{
       dispatch(reset());
     },[dispatch]);

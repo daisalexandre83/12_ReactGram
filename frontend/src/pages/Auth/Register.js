@@ -32,7 +32,7 @@ const Register = () =>{
 
         console.log(user);
 
-        dispatch(register(user))
+        dispatch(register(user));
     };
 
     //Clean all auth states

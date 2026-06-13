@@ -17,16 +17,23 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
+  const {loading,error} = useSelector((state) => state.auth);
+
   const handleSubmit = (e) =>{
     e.preventDefault();
 
     const user = {
-      enail,
-      password
-    }
+      email,
+      password,
+    };
 
     dispatch(login(user));
-  }
+  };
+
+  // Clean all auth states
+  useEffect(() => {
+    dispatch(reset());
+  },dispatch);
 
   return (
    <div id="login">
@@ -41,7 +48,9 @@ const Login = () => {
        onChange={(e) => setPassword(e.target.value)} 
        value={password || ""}
       />
-      <input type="submit" value="Entrar"/>
+       {!loading && <input type="submit" value="Entrar"/>}
+       {loading && <input type="submit" value="Aguarde..." disabled/>}
+       {error && < Message msg={error} type="error" />}
     </form>
     <p>
      Não tem uma conta? <Link to="/register">Clique aqui</Link>

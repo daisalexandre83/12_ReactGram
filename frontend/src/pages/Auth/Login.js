@@ -9,7 +9,7 @@ import {useEffect,useState} from "react";
 import {useSelector,useDispatch} from "react-redux";
 
 // Redux
-import {login,reset} from '../../slices/authSlice'
+import {login,reset} from '../../slices/authSlice';
 
 const Login = () => {
   const [email,setEmail] = useState("");
@@ -42,11 +42,11 @@ const Login = () => {
     <form onSubmit={handleSubmit}>
       <input type="text" placeholder="E-mail" 
       onChange={(e) => setEmail(e.target.value)} 
-      value={email || ""}
+      value={email || ""} autoComplete="email"
       />
       <input type="password" placeholder="Senha"
        onChange={(e) => setPassword(e.target.value)} 
-       value={password || ""}
+       value={password || ""} autoComplete="password"
       />
        {!loading && <input type="submit" value="Entrar"/>}
        {loading && <input type="submit" value="Aguarde..." disabled/>}

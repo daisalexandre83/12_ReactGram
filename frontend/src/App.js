@@ -32,11 +32,11 @@ function App() {
          <Routes>
           <Route 
             path='/' 
-            element={auth ? <Home/> : <Navigate to="login"/>} 
+            element={auth ? <Home/> : <Navigate to="/login"/>} 
           />
           <Route 
             path='/profile' 
-            element={auth ? <EditProfile/> : <Navigate to="login"/>} 
+            element={auth ? <EditProfile/> : <Navigate to="/login"/>} 
           />
           <Route path='/login' element={!auth ? <Login/> : <Navigate to="/"/>}  />
           <Route path='/register' element={!auth ? <Register/> : <Navigate to="/"/>} />

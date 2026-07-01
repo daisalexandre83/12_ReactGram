@@ -31,6 +31,19 @@ export const userSlice = createSlice({
             state.message = null;
         },
     },
+    extraReducers:(builder) =>{
+        builder
+            .addCase(profile.pending,(state)=>{
+                state.loading = true;
+                state.error = false;
+            })
+            .addCase(profile.fulfilled,(state,action) => {
+                state.loading = false;
+                state.sucess = true;
+                state.error = null;
+                state.user = action.payload;
+            })
+    },
 });
 
 export const {resetMessage} = userSlice.actions;

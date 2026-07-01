@@ -1,6 +1,33 @@
 import "./EditProfile.css";
 
+import {uploads} from "../../utils/config";
+
+// Hooks
+import { useEffect, useState } from "react";
+import { useSelector,useDispatch } from "react-redux";
+
+// Redux
+import {profile,resetMessage} from "../../slices/userSlice";
+
+//Components
+import Message from "../../components/Message";
+
 const EditProfile = () => {
+    const dispatch = useDispatch()
+
+    const {user,message,error,loading} = useSelector((state) => state.user)
+    
+    const [name,setName] = useState("");
+    const [email,setEmail] = useState("");
+    const [password,setPassword] = useState("")
+    // states
+
+    // Load user data
+    useEffect(() =>{
+        dispatch(profile());
+    },[dispatch]);
+
+    console.log(user);
 
     const handleSubmit = (e) =>{
         e.preventDefault()

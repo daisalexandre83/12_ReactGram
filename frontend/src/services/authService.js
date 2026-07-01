@@ -32,7 +32,7 @@ const login =  async(data) =>{
 
     try {
         
-      const res = await fetch (api + "/users/login",config) 
+      const res = await fetch(api + "/users/login",config) 
                     .then((res) => res.json())
                     .catch((err) => err);
 

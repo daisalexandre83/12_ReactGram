@@ -7,11 +7,12 @@ const profile = async(data,token) =>{
     try {
         const res = await fetch(api + "/users/profile",config)
           .then((res) => res.json())
-          .catch((err) => err);
+          .catch((err) => ({ errors: [err.message || "Falha na conexão com o servidor"] }));
           
           return res;
     } catch (error) {
         console.log(error);
+        return { errors: [error.message || "Falha na conexão com o servidor"] };
     }
 };
 
@@ -24,11 +25,12 @@ const updateProfile = async(data,token) =>{
         
         const res = await fetch(api + "/users/",config)
                     .then((res) => res.json())
-                    .catch((err) =>err);
+                    .catch((err) => ({ errors: [err.message || "Falha na conexão com o servidor"] }));
 
         return res;            
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        return { errors: [error.message || "Falha na conexão com o servidor"] };
     }
 }
 

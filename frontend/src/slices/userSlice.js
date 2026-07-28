@@ -18,6 +18,11 @@ export const profile = createAsyncThunk(
 
       const data = await userService.profile(user,token);
 
+      // Check for errors
+      if (data && data.errors) {
+          return thunkAPI.rejectWithValue(data.errors[0]);
+      }
+
       return data;
 
     }
@@ -27,12 +32,12 @@ export const profile = createAsyncThunk(
 export const updateProfile = createAsyncThunk(
     "user/update",
     async(user,thunkAPI) =>{
-        const token = thunkAPI.getState.auth.user.token
+        const token = thunkAPI.getState().auth.user.token
 
         const data = await userService.updateProfile(user,token);
 
         // Check for errors
-        if (data.errors) {
+        if (data && data.errors) {
             return thunkAPI.rejectWithValue(data.errors[0]);
         }
 
@@ -60,7 +65,11 @@ export const userSlice = createSlice({
                 state.error = null;
                 state.user = action.payload;
             })
-           
+            .addCase(profile.rejected, (state,action) =>{
+                state.loading = false;
+                state.error = action.payload;
+                state.user = {};
+            })
             .addCase(updateProfile.pending,(state)=>{
                 state.loading = true;
                 state.error = false;
@@ -73,9 +82,10 @@ export const userSlice = createSlice({
                 state.message = "Usuário atualizado com sucesso!"
             })
             .addCase(updateProfile.rejected, (state,action) =>{
-                state.loading = false
+                console.log(state,action);
+                state.loading = false;
                 state.error = action.payload;
-                state.user = null;
+                state.user = {};
             })
     },
 });

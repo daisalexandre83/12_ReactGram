@@ -75,77 +75,135 @@ const getCurrentUser = async(req,res) =>{
   res.status(200).json(user);
 };
 
-//Update an user
-const update = async(req,res) =>{
-  //res.send("Update");
-
-  const {name,password,bio} = req.body;
-
-  let profileImage = null;
-
-  if (req.file) {
-    profileImage = req.file.filename
-  }
-
-  const reqUser = req.user
-  
-  const user = await User.findById(new mongoose.Types.ObjectId(reqUser._id)).select("-password")
-
-  // const user = await User.findById(id).select('-password');
-
-  if (name) {
-    user.name = name
-  }
-
-  if (password) {
-    //Generate password hash
-    const salt = await bcrypt.genSalt()
-    const passwordHash = await bcrypt.hash(password,salt);
-
-    user.password = passwordHash
-  }
-
-  if(profileImage) {
-    user.profileImage = profileImage
-  }
-
-  if(bio) {
-    user.bio = bio;
-  }
-
-  await user.save();
-
-  res.status(200).json(user);
-};
-
-//Get user by id
-const getUserById = async(req,res) =>{
-
-  const {id} = req.params;
-
+const update = async (req,res) =>{
   try {
-    const user = await User.findById(new mongoose.Types.ObjectId(id)).select
-    ("-password"
-    );
+     const {name,password,bio} = 
+     req.body;
+     let profileImage = null;
 
-     //Check if user exists
-    if (!user) {
-      res.status(404).json({errors:["Usuário não encontrado 2"]});
-      return;
-    }
+      if (req.file) {
+       profileImage =
+      req.file.filename;
+      }
 
-    res.status(200).json(user);
+       const reqUser = req.user
+       const user = await 
+       User.findById(new 
+       mongoose.Types.ObjectId(reqUser._id)).select("-password");
+
+       if (!user) {
+        return res.status(404).json({
+          errors:["Usuário não encontrado"]
+        });
+       }
+
+        if (name) {
+         user.name = name;
+        }
+
+        if(password){
+          const salt = await bcrypt.genSalt();
+          const passwordHash = await bcrypt.hash(password,salt);
+           user.password = passwordHash;
+        }
+
+        if(profileImage) {
+          user.profileImage = 
+          profileImage
+       }
+
+        if(bio) {
+          user.bio = bio;
+        }
+
+        await user.save();
+
+        res.status(200).json(user);
   } catch (error) {
-    res.status(404).json({errors:["Usuário não encontrado"]});
-    return;
+    console.error(error);
+    res.status(500).json({errors:["Houve um erro no servidor,tente novamente mais tarde."] })
   }
-};
+}
 
 module.exports = {
-    register,
-    login,
-    getCurrentUser,
-    update,
-    getUserById,
-};
+   register,
+   login,
+   getCurrentUser,
+   update,
+   getUserById,
+  };
+
+// //Update an user
+// const update = async(req,res) =>{
+//   //res.send("Update");
+  
+//   const {name,password,bio} = req.body;
+
+//   let profileImage = null;
+
+//   if (req.file) {
+//     profileImage = req.file.filename;
+//   }
+
+//   const reqUser = req.user
+  
+//   const user = await User.findById(new mongoose.Types.ObjectId(reqUser._id)).select("-password")
+
+//   // const user = await User.findById(id).select('-password');
+
+//   if (name) {
+//     user.name = name
+//   }
+
+//   if (password) {
+//     //Generate password hash
+//     const salt = await bcrypt.genSalt()
+//     const passwordHash = await bcrypt.hash(password,salt);
+
+//     user.password = passwordHash
+//   }
+
+//   if(profileImage) {
+//     user.profileImage = profileImage
+//   }
+
+//   if(bio) {
+//     user.bio = bio;
+//   }
+
+//   await user.save();
+
+//   res.status(200).json(user);
+// };
+
+// //Get user by id
+// const getUserById = async(req,res) =>{
+
+//   const {id} = req.params;
+
+//   try {
+//     const user = await User.findById(new mongoose.Types.ObjectId(id)).select
+//     ("-password"
+//     );
+
+//      //Check if user exists
+//     if (!user) {
+//       res.status(404).json({errors:["Usuário não encontrado 2"]});
+//       return;
+//     }
+
+//     res.status(200).json(user);
+//   } catch (error) {
+//     res.status(404).json({errors:["Usuário não encontrado"]});
+//     return;
+//   }
+// };
+
+// module.exports = {
+//     register,
+//     login,
+//     getCurrentUser,
+//     update,
+//     getUserById,
+// };
 

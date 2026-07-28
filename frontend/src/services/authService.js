@@ -8,7 +8,7 @@ const register = async(data) =>{
     try {
         const res = await fetch(api + "/users/register",config)
         .then((res) =>res.json())
-        .catch((err) => err);
+        .catch((err) => ({ errors: [err.message || "Falha na conexão com o servidor"] }));
 
     if (res._id) {
     localStorage.setItem("user",JSON.stringify(res));
@@ -17,6 +17,7 @@ const register = async(data) =>{
     return res;
     } catch (error) {
         console.log(error);
+        return { errors: [error.message || "Falha na conexão com o servidor"] };
     }
 };
 
@@ -34,7 +35,7 @@ const login =  async(data) =>{
         
       const res = await fetch(api + "/users/login",config) 
                     .then((res) => res.json())
-                    .catch((err) => err);
+                    .catch((err) => ({ errors: [err.message || "Falha na conexão com o servidor"] }));
 
                     
 
@@ -44,7 +45,8 @@ const login =  async(data) =>{
        
        return res;
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      return { errors: [error.message || "Falha na conexão com o servidor"] };
     }
 };
 

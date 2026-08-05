@@ -51,6 +51,11 @@ export const getUserDetails = createAsyncThunk(
    async(id,thunkAPI) =>{
      const data = await userService.getUserDetails(id);
      
+     // Check for errors
+     if (data && data.errors) {
+         return thunkAPI.rejectWithValue(data.errors[0]);
+     }
+
      return data;
    }
 );
@@ -106,6 +111,11 @@ export const userSlice = createSlice({
                 state.sucess = true;
                 state.error = null;
                 state.user = action.payload;
+            })
+            .addCase(getUserDetails.rejected, (state,action) =>{
+                state.loading = false;
+                state.error = action.payload;
+                state.user = {};
             })
     },
 });

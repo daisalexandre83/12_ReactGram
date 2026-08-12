@@ -1,29 +1,29 @@
-import {createSlice,createAsyncThunk} from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import userService from '../services/userService';
 
 const initialState = {
-    user:{},
-    error:false,
-    sucess:false,
-    loading:false,
-    message:null,
+    user: {},
+    error: false,
+    sucess: false,
+    loading: false,
+    message: null,
 };
 
 //Get user details
 export const profile = createAsyncThunk(
     "user/profile",
-    async(user,thunkAPI) => {
+    async (user, thunkAPI) => {
 
-      const token = thunkAPI.getState().auth.user.token
+        const token = thunkAPI.getState().auth.user.token
 
-      const data = await userService.profile(user,token);
+        const data = await userService.profile(user, token);
 
-      // Check for errors
-      if (data && data.errors) {
-          return thunkAPI.rejectWithValue(data.errors[0]);
-      }
+        // Check for errors
+        if (data && data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0]);
+        }
 
-      return data;
+        return data;
 
     }
 );
@@ -31,88 +31,88 @@ export const profile = createAsyncThunk(
 // Update user details
 export const updateProfile = createAsyncThunk(
     "user/update",
-    async(user,thunkAPI) =>{
+    async (user, thunkAPI) => {
         const token = thunkAPI.getState().auth.user.token
 
-        const data = await userService.updateProfile(user,token);
+        const data = await userService.updateProfile(user, token);
 
         // Check for errors
         if (data && data.errors) {
             return thunkAPI.rejectWithValue(data.errors[0]);
         }
 
-      return data;  
+        return data;
     }
 );
 
 // Get user details
 export const getUserDetails = createAsyncThunk(
-   "user/get",
-   async(id,thunkAPI) =>{
-     const data = await userService.getUserDetails(id);
-     
-     // Check for errors
-     if (data && data.errors) {
-         return thunkAPI.rejectWithValue(data.errors[0]);
-     }
+    "user/get",
+    async (id, thunkAPI) => {
+        const data = await userService.getUserDetails(id);
 
-     return data;
-   }
+        // Check for errors
+        if (data && data.errors) {
+            return thunkAPI.rejectWithValue(data.errors[0]);
+        }
+
+        return data;
+    }
 );
 
 export const userSlice = createSlice({
-    name:"user",
+    name: "user",
     initialState,
-    reducers:{
-        resetMessage:(state) =>{
+    reducers: {
+        resetMessage: (state) => {
             state.message = null;
         },
     },
-    extraReducers:(builder) =>{
+    extraReducers: (builder) => {
         builder
-            .addCase(profile.pending,(state)=>{
+            .addCase(profile.pending, (state) => {
                 state.loading = true;
                 state.error = false;
             })
-            .addCase(profile.fulfilled,(state,action) => {
+            .addCase(profile.fulfilled, (state, action) => {
                 state.loading = false;
                 state.sucess = true;
                 state.error = null;
                 state.user = action.payload;
             })
-            .addCase(profile.rejected, (state,action) =>{
+            .addCase(profile.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
                 state.user = {};
             })
-            .addCase(updateProfile.pending,(state)=>{
+            .addCase(updateProfile.pending, (state) => {
                 state.loading = true;
                 state.error = false;
             })
-            .addCase(updateProfile.fulfilled,(state,action) => {
+            .addCase(updateProfile.fulfilled, (state, action) => {
                 state.loading = false;
                 state.sucess = true;
                 state.error = null;
                 state.user = action.payload;
                 state.message = "Usuário atualizado com sucesso!"
             })
-            .addCase(updateProfile.rejected, (state,action) =>{
-                console.log(state,action);
+            .addCase(updateProfile.rejected, (state, action) => {
+                console.log(state, action);
                 state.loading = false;
                 state.error = action.payload;
                 state.user = {};
             })
-            .addCase(getUserDetails.pending,(state)=>{
+            .addCase(getUserDetails.pending, (state) => {
                 state.loading = true;
                 state.error = false;
             })
-            .addCase(getUserDetails.fulfilled,(state,action) => {
+            .addCase(getUserDetails.fulfilled, (state, action) => {
                 state.loading = false;
                 state.sucess = true;
                 state.error = null;
                 state.user = action.payload;
             })
-            .addCase(getUserDetails.rejected, (state,action) =>{
+            .addCase(getUserDetails.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
                 state.user = {};
@@ -120,5 +120,5 @@ export const userSlice = createSlice({
     },
 });
 
-export const {resetMessage} = userSlice.actions;
+export const { resetMessage } = userSlice.actions;
 export default userSlice.reducer; 

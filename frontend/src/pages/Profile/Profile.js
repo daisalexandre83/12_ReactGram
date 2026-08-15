@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 
 // redux
 import { getUserDetails } from "../../slices/userSlice";
+import { publishPhoto } from "../../slices/photoSlice";
 
 
 const Profile = () => {
@@ -22,8 +23,17 @@ const Profile = () => {
 
   const dispatch = useDispatch()
 
-  const { user, loading } = useSelector((state) => state.user)
-  const { user: userAuth } = useSelector((state) => state.auth)
+  const { user, loading } = useSelector((state) => state.user);
+  const { user: userAuth } = useSelector((state) => state.auth);
+  const {
+    photos,
+    loading: loadingPhoto,
+    messagePhoto,
+    error: errorPhoto,
+  } = useSelector((state) => state.photo);
+
+  const [title, setTitle] = useState("")
+  const [image, setImage] = useState("")
 
   // New form edit form refs
   const newPhotoForm = useRef()
@@ -34,8 +44,25 @@ const Profile = () => {
     dispatch(getUserDetails(id));
   }, [dispatch, id]);
 
+  const handleFile = (e) => {
+
+    const image = e.target.files[0];
+
+    setImage(image);
+  };
+
   const submitHandle = (e) => {
     e.preventDefault();
+
+    const photoData = {
+      title,
+      image
+    }
+
+    // build form data
+    const formData = new FormData()
+
+    const photoFormData = Object.keys(photoData).forEach()
   };
 
   if (loading) {
@@ -64,7 +91,7 @@ const Profile = () => {
             </label>
             <label>
               <span>Imagem:</span>
-              <input type="file" />
+              <input type="file" onChange={handleFile} />
             </label>
             <input type="submit" value="Postar" />
           </form>

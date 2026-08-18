@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom";
 
 // redux
 import { getUserDetails } from "../../slices/userSlice";
-import { publishPhoto } from "../../slices/photoSlice";
+import { publishPhoto, resetMessage } from "../../slices/photoSlice";
 
 
 const Profile = () => {
@@ -62,7 +62,19 @@ const Profile = () => {
     // build form data
     const formData = new FormData()
 
-    const photoFormData = Object.keys(photoData).forEach()
+    const photoFormData = Object.keys(photoData).forEach((key) =>
+      formData.append(key, photoData[key])
+    );
+
+    formData.append("photo", photoFormData)
+
+    dispatch(publishPhoto(formData))
+
+    setTitle("")
+
+    setTimeout(() => {
+      dispatch(resetMessage())
+    }, 2000);
   };
 
   if (loading) {
@@ -87,15 +99,23 @@ const Profile = () => {
           <form onSubmit={submitHandle}>
             <label>
               <span>Título para a foto:</span>
-              <input type="text" placeholder="Insrira um título" />
+              <input type="text" placeholder="Insrira um título"
+                onChange={(e) => setTitle(e.target.value)}
+                value={title || ""}
+              />
             </label>
             <label>
               <span>Imagem:</span>
               <input type="file" onChange={handleFile} />
             </label>
-            <input type="submit" value="Postar" />
+            {!loadingPhoto && <input type="submit" value="Postar" />}
+            {loadingPhoto && (
+              <input type="submit" disabled value="Aguarde..." />
+            )}
           </form>
         </div>
+        {errorPhoto && <Message msg={errorPhoto} type="error" />}
+        {messagePhoto && <Message msg={messagePhoto} type="sucess" />}
       </>
     )}
   </div>;

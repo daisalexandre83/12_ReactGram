@@ -28,7 +28,7 @@ const Profile = () => {
   const {
     photos,
     loading: loadingPhoto,
-    messagePhoto,
+    message: messagePhoto,
     error: errorPhoto,
   } = useSelector((state) => state.photo);
 
@@ -62,11 +62,9 @@ const Profile = () => {
     // build form data
     const formData = new FormData()
 
-    const photoFormData = Object.keys(photoData).forEach((key) =>
+    Object.keys(photoData).forEach((key) =>
       formData.append(key, photoData[key])
     );
-
-    formData.append("photo", photoFormData)
 
     dispatch(publishPhoto(formData))
 

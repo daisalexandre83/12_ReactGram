@@ -3,7 +3,7 @@ import { api, requestConfig } from "../utils/config";
 // Publish an user photo
 const publishPhoto = async(data,token) =>{
 
-   const config = requestConfig("POST",data,token,true)
+   const config = requestConfig("POST",data,token,true);
 
    try {
 
@@ -14,10 +14,9 @@ const publishPhoto = async(data,token) =>{
         return res;
     
    } catch (error) {
-       console.log(error)
+       console.log(error);
    }
-
-}
+};
 
 const photoService = {
   publishPhoto,

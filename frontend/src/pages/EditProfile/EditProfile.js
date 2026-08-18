@@ -69,7 +69,7 @@ const EditProfile = () => {
 
         setTimeout(() => {
             dispatch(resetMessage())
-        }, 2000)
+        }, 2000);
     };
 
 

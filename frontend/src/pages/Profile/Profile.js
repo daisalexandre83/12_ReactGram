@@ -19,21 +19,21 @@ import { publishPhoto, resetMessage } from "../../slices/photoSlice";
 
 const Profile = () => {
 
-  const { id } = useParams()
+  const { id } = useParams();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const { user, loading } = useSelector((state) => state.user);
   const { user: userAuth } = useSelector((state) => state.auth);
   const {
     photos,
     loading: loadingPhoto,
-    message: messagePhoto,
     error: errorPhoto,
+    message: messagePhoto,
   } = useSelector((state) => state.photo);
 
-  const [title, setTitle] = useState("")
-  const [image, setImage] = useState("")
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState("");
 
   // New form edit form refs
   const newPhotoForm = useRef()
@@ -60,13 +60,15 @@ const Profile = () => {
     }
 
     // build form data
-    const formData = new FormData()
+    const formData = new FormData();
 
-    Object.keys(photoData).forEach((key) =>
+    const photoFormData = Object.keys(photoData).forEach((key) =>
       formData.append(key, photoData[key])
     );
 
-    dispatch(publishPhoto(formData))
+    formData.append("photo", photoFormData);
+
+    dispatch(publishPhoto(formData));
 
     setTitle("")
 

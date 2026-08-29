@@ -90,7 +90,7 @@ const Profile = () => {
         <p>{user.bio}</p>
       </div>
     </div>
-    {id === userAuth._id && (
+    {userAuth && id === userAuth._id && (
       <>
         <p>form</p>
         <div className="new-photo" ref={newPhotoForm}>
@@ -98,7 +98,7 @@ const Profile = () => {
           <form onSubmit={submitHandle}>
             <label>
               <span>Título para a foto:</span>
-              <input type="text" placeholder="Insrira um título"
+              <input type="text" placeholder="Insira um título"
                 onChange={(e) => setTitle(e.target.value)}
                 value={title || ""}
               />
@@ -120,9 +120,9 @@ const Profile = () => {
     <div className="user-photos">
       <h2>Fotos publicadas:</h2>
       <div className="photos-container">
-        {photos && photos.map((photo) => (
+        {Array.isArray(photos) && photos.map((photo) => (
           <div className="photo" key={photo._id}>
-            {photo.image && (<img src={`${uploads}/photos/${photo.image}`} />)}
+            {photo.image && (<img src={`${uploads}/photos/${photo.image}`} alt={photo.title || "Foto"} />)}
           </div>
         ))}
       </div>
@@ -130,4 +130,4 @@ const Profile = () => {
   </div>;
 };
 
-export default Profile
+export default Profile;

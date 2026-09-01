@@ -2,27 +2,26 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET;
 
-const authGuard = async(req,res,next) =>{
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
+const authGuard = async (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-    // check if header has a token
-    if(!token) {
-      console.log("-> authGuard: Token não fornecido no cabeçalho Authorization");
-      return res.status(401).json({errors:["Acesso negado!"]});
-    }
+  // check if header has a token
+  if (!token) {
+    console.log("-> authGuard: Token não fornecido no cabeçalho Authorization");
+    return res.status(401).json({ errors: ["Acesso negado!"] });
+  }
 
-    //check if token is valid
-    try {
-      const verified = jwt.verify(token,jwtSecret);
+  //check if token is valid
+  try {
+    const verified = jwt.verify(token, jwtSecret);
 
-      req.user = await User.findById(verified.id).select("-password");
-;
-
-      next();
-    } catch (error) {
-        res.status(401).json({errors:["O Token inválido!"]})
-    }
+    req.user = await User.findById(verified.id).select("-password");
+    next();
+  } catch (error) {
+    console.log("Erro na validação do token no authGuard:", error.message);
+    res.status(401).json({ errors: ["O Token é  inválido!"] })
+  }
 };
 
 module.exports = authGuard;

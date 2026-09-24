@@ -7,7 +7,7 @@ const initialState = {
   error: false,
   sucess: false,
   loading: false,
-  message: null
+  message: null,
 }
 
 // Publish user photo
@@ -18,6 +18,8 @@ export const publishPhoto = createAsyncThunk(
     const token = thunkAPI.getState().auth.user.token;
 
     const data = await photoService.publishPhoto(photo, token);
+
+    console.log(data.errors);
 
     //Check for erros
     if (data.errors) {
@@ -36,9 +38,45 @@ export const getUserPhotos = createAsyncThunk(
 
     const data = await photoService.getUserPhotos(id, token);
 
+    console.log(data);
+    console.log(data.errors);
+
     return data;
   }
 );
+
+//  Delete a photo
+export const deletePhoto = createAsyncThunk(
+  "photo/delete",
+  async (id, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+
+    const data = await photoService.deletePhoto(id, token);
+
+    //Check for erros
+    if (data.errors) {
+      return thunkAPI.rejectWithValue(data.errors[0]);
+    }
+
+
+    return data;
+
+  }
+);
+
+// Update a photo
+export const updatePhoto = createAsyncThunk(
+  "photo/update",
+  async (photoData, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token;
+
+    const data = await photoService.updatePhoto(
+      { title: photoData.title },
+      photoData._id,
+      token
+    );
+  }
+)
 
 export const photoSlice = createSlice({
   name: "publish",
@@ -67,17 +105,59 @@ export const photoSlice = createSlice({
         state.error = action.payload;
         state.photo = {};
       })
-    builder
       .addCase(getUserPhotos.pending, (state) => {
         state.loading = true;
-        state.error = null;
+        state.error = false;
       })
       .addCase(getUserPhotos.fulfilled, (state, action) => {
         state.loading = false;
         state.sucess = true;
         state.error = null;
         state.photos = action.payload;
-      });
+      })
+      .addCase(deletePhoto.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(deletePhoto.fulfilled, (state, action) => {
+        state.loading = false;
+        state.sucess = true;
+        state.error = null;
+
+        state.photos = state.photos.filter((photo) => {
+          return photo._id !== action.payload.id;
+        })
+
+        state.message = action.payload.message;
+      })
+      .addCase(deletePhoto.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.photo = {};
+      })
+      .addCase(updatePhoto.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(updatePhoto.fulfilled, (state, action) => {
+        state.loading = false;
+        state.sucess = true;
+        state.error = null;
+
+        state.photos.map((photo) => {
+          if (photo._id === action.payload.photo._id) {
+            return photo.title = action.payload.photo.title
+          }
+          return photo;
+        });
+
+        state.message = action.payload.message;
+      })
+      .addCase(updatePhoto.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.photo = {};
+      })
   },
 });
 

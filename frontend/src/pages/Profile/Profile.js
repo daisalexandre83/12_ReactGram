@@ -19,6 +19,7 @@ import {
   resetMessage,
   getUserPhotos,
   deletePhoto,
+  updatePhoto,
 } from "../../slices/photoSlice";
 
 
@@ -55,7 +56,6 @@ const Profile = () => {
   }, [dispatch, id]);
 
   const handleFile = (e) => {
-
     const image = e.target.files[0];
 
     setImage(image);
@@ -88,6 +88,10 @@ const Profile = () => {
     dispatch(publishPhoto(formData));
 
     setTitle("");
+
+    setTimeout(() => {
+      dispatch((resetMessage));
+    }, 2000);
   };
 
   // Delete a photo
@@ -106,19 +110,32 @@ const Profile = () => {
 
   // Update a photo
   const handleUpdate = (e) => {
-    e.preventDefault()
-  }
+    e.preventDefault();
 
+    const photoData = {
+      title: editTitle,
+      id: editId
+    }
+
+    dispatch(updatePhoto(photoData));
+
+    resetComponentMessage();
+  };
+
+  // Open edit form
   const handleEdit = (photo) => {
     if (editPhotoForm.current.classList.contains("hide")) {
       hideOrShowForms();
     }
-  }
+
+    setEditId(photo._id);
+    setEditTitle(photo.title);
+    setEditImage(photo.image);
+  };
 
   const handleCancelEdit = (e) => {
     hideOrShowForms();
-
-  }
+  };
 
   if (loading) {
     return <p>Carregando...</p>;
@@ -167,12 +184,13 @@ const Profile = () => {
           <form onSubmit={handleUpdate}>
             <input
               type="text"
+              placeholder="Insira o novo título"
               onChange={(e) => setEditTitle(e.target.value)}
               value={editTitle || ""}
             />
-            <input type="submit" disabled value="Aguarde..." />
+            <input type="submit" disabled value="Atualizar..." />
             <button className="cancel-btn" onClick={handleCancelEdit}>
-              Cancelar ediçãO
+              Cancelar edição
             </button>
           </form>
         </div>

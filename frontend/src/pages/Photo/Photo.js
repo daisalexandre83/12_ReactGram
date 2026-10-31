@@ -20,7 +20,7 @@ const Photo = () => {
 
     const dispatch = useDispatch();
 
-    const resetMessage = useResetComponentMessage(dispatch)
+    const resetMessage = useResetComponentMessage(dispatch);
 
     const { user } = useSelector((state) => state.auth)
     const { photo, loading, error, message } = useSelector(
@@ -48,8 +48,8 @@ const Photo = () => {
         <PhotoItem photo={photo} />
         <LikeContainer photo={photo} user={user} handleLike={handleLike} />
         <div className="message-container">
-            {error && <Message msg={error} type={error} />}
-            {message && <Message msg={message} type={sucess} />}
+            {error && <Message msg={error} type="error" />}
+            {message && <Message msg={message} type="sucess" />}
         </div>
     </div>;
 };

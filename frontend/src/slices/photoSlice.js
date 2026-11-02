@@ -21,6 +21,8 @@ export const publishPhoto = createAsyncThunk(
 
     const data = await photoService.publishPhoto(photo, token);
 
+    console.log(data.errors);
+
     // Se o token for inválido ou expirado, faz logout automático
     if (data.errors && data.errors[0] === "O Token é inválido!") {
       authService.logout();

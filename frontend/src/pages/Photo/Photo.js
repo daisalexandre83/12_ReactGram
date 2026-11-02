@@ -8,12 +8,12 @@ import { useResetComponentMessage } from "../../hooks/useResetComponentMessage";
 
 // components
 import Message from "../../components/Message";
-import { Link } from "react-router-dom";
-import PhotoItem from "../../components/PhotoItem";;
+import PhotoItem from "../../components/PhotoItem";
 import LikeContainer from "../../components/LikeContainer";
+import { Link } from "react-router-dom";
 
 // Redux
-import { getPhoto, like } from "../../slices/photoSlice";
+import { getPhoto, like, comment } from "../../slices/photoSlice";
 
 const Photo = () => {
     const { id } = useParams();
@@ -27,18 +27,24 @@ const Photo = () => {
         (state) => state.photo
     );
 
-    // comentários
+    const [commentText, setCommentText] = useState("")
 
     //Load photo data
     useEffect(() => {
         dispatch(getPhoto(id));
     }, [dispatch, id]);
 
+    // Insert a like
     const handleLike = () => {
         dispatch(like(photo._id));
 
         resetMessage();
     };
+
+    //Insert a comment
+    const handleComment = (e) => {
+        e.preventDefault()
+    }
 
     if (loading) {
         return <p>Carregando...</p>
@@ -50,6 +56,9 @@ const Photo = () => {
         <div className="message-container">
             {error && <Message msg={error} type="error" />}
             {message && <Message msg={message} type="sucess" />}
+        </div>
+        <div className="comments">
+            <h3>Comentários:({photo.comments.length})</h3>
         </div>
     </div>;
 };

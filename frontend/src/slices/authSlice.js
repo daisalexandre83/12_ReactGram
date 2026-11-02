@@ -55,6 +55,13 @@ export const authSlice = createSlice({
             state.error = false;
             state.sucess = false;
         },
+        // Limpa o estado quando o token expira ou é inválido
+        tokenExpired:(state) => {
+            state.user = null;
+            state.error = "Sessão expirada. Faça login novamente.";
+            state.loading = false;
+            state.sucess = false;
+        },
     },
     extraReducers:(builder) =>{
         builder
@@ -97,6 +104,6 @@ export const authSlice = createSlice({
     },
 });
 
-export const {reset} = authSlice.actions;
+export const {reset, tokenExpired} = authSlice.actions;
 export default authSlice.reducer;
 

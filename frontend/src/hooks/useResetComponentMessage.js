@@ -5,6 +5,6 @@ export const useResetComponentMessage = (dispatch) => {
     return () => {
         setTimeout(() => {
             dispatch(resetMessage())
-        }, 2000)
-    }
-}
+        }, 2000);
+    };
+};

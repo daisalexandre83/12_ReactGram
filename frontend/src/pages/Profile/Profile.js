@@ -177,7 +177,7 @@ const Profile = () => {
         <div className="edit-profile hide" ref={editPhotoForm}>
           <p>Editando....</p>
           {editImage && (
-            <img src={`$(uploads)/photos/${editImage}`} alt={editTitle} />
+            <img src={`${uploads}/photos/${editImage}`} alt={editTitle} />
           )}
           <form onSubmit={handleUpdate}>
             <input
@@ -199,7 +199,7 @@ const Profile = () => {
     <div className="user-photos">
       <h2>Fotos publicadas:</h2>
       <div className="photos-container">
-        {photos &&
+        {Array.isArray(photos) &&
           photos.map((photo) => (
             <div className="photo" key={photo._id}>
               {photo.image && (
@@ -223,7 +223,9 @@ const Profile = () => {
               )}
             </div>
           ))}
-        {photos.length === 0 && <p>Ainda não há fotos publicadas</p>}
+        {Array.isArray(photos) && photos.length === 0 && (
+          <p>Ainda não há fotos publicadas</p>
+        )}
       </div>
     </div>
   </div>;

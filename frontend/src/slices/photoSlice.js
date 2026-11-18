@@ -79,7 +79,7 @@ export const deletePhoto = createAsyncThunk(
 export const updatePhoto = createAsyncThunk(
   "photo/update",
   async (photoData, thunkAPI) => {
-    const token = thunkAPI.getState().auth.user?.token;
+    const token = thunkAPI.getState().auth.user.token;
 
     const data = await photoService.updatePhoto(
       { title: photoData.title },
@@ -111,28 +111,9 @@ export const getPhoto = createAsyncThunk("photo/getphoto",
     return data;
   });
 
-//Add comment to a photo
-export const comment = createAsyncThunk("photo/comment", async (photoData, thunkAPI) => {
-
-  const token = thunkAPI.getState().auth.user.token;
-
-  const data = await photoService.comment(
-    { comment: photoData.comment },
-    photoData.id,
-    token
-  );
-
-  //Check for erros
-  if (data.errors) {
-    return thunkAPI.rejectWithValue(data.errors[0]);
-  }
-
-  return data;
-})
-
 // Like a photo
 export const like = createAsyncThunk("photo/like", async (id, thunkAPI) => {
-  const token = thunkAPI.getState().auth.user?.token;
+  const token = thunkAPI.getState().auth.user.token;
 
   const data = await photoService.like(id, token);
 
@@ -142,8 +123,36 @@ export const like = createAsyncThunk("photo/like", async (id, thunkAPI) => {
   }
 
   return data;
-})
+});
 
+//Add comment to a photo
+export const comment = createAsyncThunk(
+  "photo/comment",
+  async (commentData, thunkAPI) => {
+
+    const token = thunkAPI.getState().auth.user.token;
+
+    const data = await photoService.comment(
+      { comment: commentData.comment },
+      commentData.id,
+      token
+    );
+
+    //Check for erros
+    if (data.errors) {
+      return thunkAPI.rejectWithValue(data.errors[0]);
+    }
+
+    return data;
+  }
+);
+
+//Get all photos
+export const getPhotos = createAsyncThunk("photo/getall", async () => {
+  const data = await photoService.getPhotos();
+
+  return data;
+});
 
 export const photoSlice = createSlice({
   name: "publish",
@@ -274,7 +283,17 @@ export const photoSlice = createSlice({
       .addCase(comment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(getPhotos.pending, (state) => {
+        state.loading = true;
+        state.error = false;
+      })
+      .addCase(getPhotos.fulfilled, (state, action) => {
+        state.loading = false;
+        state.sucess = true;
+        state.error = null;
+        state.photos = Array.isArray(action.payload) ? action.payload : [];
+      })
   },
 });
 

@@ -39,12 +39,12 @@ const Navbar = () => {
     e.preventDefault()
 
     if (query) {
-
+      return navigate(`/search?q=${query}`);
     }
   }
 
   return <nav id="nav">
-    <Link to="">ReactGram</Link>
+    <Link to="/">ReactGram</Link>
     <form id="search-form" onSunbmit={handleSearch}>
       <BsSearch />
       <input

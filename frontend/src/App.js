@@ -56,7 +56,7 @@ function App() {
             />
             <Route
               path='/search'
-              element={!auth ? <Search /> : <Navigate to="/login" />}
+              element={auth ? <Search /> : <Navigate to="/login" />}
             />
             <Route
               path='/photos/:id'

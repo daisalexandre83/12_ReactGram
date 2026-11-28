@@ -22,6 +22,10 @@ const publishPhoto = async (data, token) => {
 
 // Get user photos
 const getUserPhotos = async (id, token) => {
+  if (!id || id === "undefined") {
+    return [];
+  }
+
   const config = requestConfig("GET", null, token);
 
   try {
@@ -116,8 +120,8 @@ const comment = async (data, id, token) => {
 };
 
 // Get all photos
-const getPhotos = async () => {
-  const config = requestConfig("GET")
+const getPhotos = async (token) => {
+  const config = requestConfig("GET", null, token);
 
   try {
 

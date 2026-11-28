@@ -51,8 +51,10 @@ const Profile = () => {
 
   // Load user data
   useEffect(() => {
-    dispatch(getUserDetails(id));
-    dispatch(getUserPhotos(id));
+    if (id && id !== "undefined") {
+      dispatch(getUserDetails(id));
+      dispatch(getUserPhotos(id));
+    }
   }, [dispatch, id]);
 
   const handleFile = (e) => {

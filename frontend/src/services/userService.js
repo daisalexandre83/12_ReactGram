@@ -36,6 +36,9 @@ const updateProfile = async (data, token) => {
 
 //Get user details
 const getUserDetails = async (id) => {
+    if (!id || id === "undefined") {
+        return null;
+    }
 
     const config = requestConfig("GET")
 
